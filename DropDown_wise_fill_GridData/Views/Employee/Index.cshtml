@@ -1,0 +1,45 @@
+﻿@model DropDown_wise_fill_GridData.Employee
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/StyleSheet1.css" rel="stylesheet" />
+<table style="width: 90%; text-align: center; background-color: #ADD8E6; padding: 10px;">
+    <tr>
+        <td style="padding: 10px; text-align: center; height:30px; background-color:#FF0000;
+          font-size:20pt; font-weight:bold; color:blue;">
+            Select Manager #
+            @Html.DropDownList("lstManagerEmployee", Model.ManagerEmployeeList)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="employeeListGrid">
+                @Html.Partial("_ShowManagerTeam", Model.EmployeeTeamGrid)
+            </div>
+        </td>
+    </tr>
+</table>
+<script>
+
+    $(document).ready(function () {
+        $("#lstManagerEmployee").append($("<option></option>").val("0").html("All Employee"));
+        $("#lstManagerEmployee").val("0");
+    });
+</script>
+<script type="text/javascript">
+
+    $('#lstManagerEmployee').change(function (e) {
+        e.preventDefault();
+        var url = '@Url.Action("Filter")';
+        $.get(url, { Manager_ID: $(this).val() }, function (result) {
+            $('#employeeListGrid').html(result);
+        });
+    });
+</script>  
